@@ -1,0 +1,25 @@
+weather_forecast_task:
+  description: >
+    Retrieve a {forecast_days}-day weather forecast for
+    {location_name} using precise latitude ({latitude}) and longitude ({longitude}).
+    Include daily high/low temperatures, precipitation chances, wind speeds,
+    and any active weather alerts.
+  expected_output: >
+    A structured forecast report with:
+    - Day-by-day temperature highs and lows
+    - Percentage chance and amount of precipitation
+    - Wind speed and direction
+    - Weather condition summary
+    - Active alerts (if any)
+
+analysis_task:
+  description: >
+    Analyze the weather forecast for {location_name} and
+    generate travel and safety recommendations. Consider
+    precipitation, wind, temperature extremes, and alerts.
+  expected_output: >
+    A detailed advisory including:
+    - Travel risk levels (low/medium/high)
+    - Recommended clothing and gear
+    - Best times of day for outdoor activities
+    - Emergency preparedness tips if severe weather expected
