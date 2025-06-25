@@ -1,12 +1,31 @@
-<<<<<<< HEAD
 # crewai-weather-mcp-agent
 
-Welcome to the MyAiAgent Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+A CrewAI-powered multi-agent system that connects with the [weather MCP server](https://github.com/jalateras/weather/tree/master) to fetch and process weather data using collaborative AI agents.
+
+---
+
+## Overview
+
+**crewai-weather-mcp-agent** leverages the [CrewAI](https://crewai.com) platform to orchestrate multiple AI agents, each with specialized roles, for interacting with the weather MCP server. This project demonstrates how CrewAI agents can be integrated with external services to automate data retrieval and analysis workflows.
+
+---
+
+## Features
+
+- Connects directly to the [weather MCP server](https://github.com/jalateras/weather/tree/master) for real-time weather data.
+- Utilizes CrewAI's multi-agent framework for flexible, collaborative task execution.
+- Easily customizable agent and task configurations.
+- Designed for both local development and scalable deployment.
+
+---
 
 ## Installation
 
-Ensure you have Python >=3.10 <3.14 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+**Prerequisites:**  
+- Python >=3.10, <3.14  
+- [UV](https://docs.astral.sh/uv/) for dependency management
 
+**Install UV (if not already installed):**
 First, if you haven't already, install uv:
 
 ```bash
@@ -23,14 +42,19 @@ crewai install
 
 **Add your `OPENAI_API_KEY` into the `.env` file**
 
-- Modify `src/my_ai_agent/config/agents.yaml` to define your agents
-- Modify `src/my_ai_agent/config/tasks.yaml` to define your tasks
-- Modify `src/my_ai_agent/crew.py` to add your own logic, tools and specific args
-- Modify `src/my_ai_agent/main.py` to add custom inputs for your agents and tasks
+## Project Structure
+
+- `src/my_ai_agent/config/agents.yaml` — Define agent roles and properties
+- `src/my_ai_agent/config/tasks.yaml` — Specify tasks for the crew
+- `src/my_ai_agent/crew.py` — Crew assembly and orchestration logic
+- `src/my_ai_agent/main.py` — Project entry point
+- `src/my_ai_agent/tools/custom_tool.py` — Integration with the weather MCP server
+
+---
 
 ## Running the Project
 
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
+Agents will connect to the weather MCP server and execute tasks as defined in your configuration files.
 
 ```bash
 $ crewai run
@@ -46,12 +70,10 @@ The my_ai_agent Crew is composed of multiple AI agents, each with unique roles, 
 
 ## Support
 
-For support, questions, or feedback regarding the MyAiAgent Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
+- [CrewAI Documentation](https://docs.crewai.com)
+- [CrewAI GitHub](https://github.com/joaomdmoura/crewai)
+- [Join CrewAI Discord](https://discord.com/invite/X4JWnZnxPb)
 
-Let's create wonders together with the power and simplicity of crewAI.
-=======
+For issues specific to the weather MCP server, see the [weather server repo](https://github.com/jalateras/weather/tree/master).
+
 
