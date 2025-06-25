@@ -1,6 +1,6 @@
 # crewai-weather-mcp-agent
 
-A CrewAI-powered multi-agent system that connects with the [weather MCP server](https://github.com/jalateras/weather/tree/master) to fetch and process weather data using collaborative AI agents.
+A CrewAI-powered multi-agent system that connects with the [weather MCP server](https://github.com/kushal2705/weather-mcp-server) to fetch and process weather data using collaborative AI agents.
 
 ---
 
@@ -12,7 +12,7 @@ A CrewAI-powered multi-agent system that connects with the [weather MCP server](
 
 ## Features
 
-- Connects directly to the [weather MCP server](https://github.com/jalateras/weather/tree/master) for real-time weather data.
+- Connects directly to the [weather MCP server](https://github.com/kushal2705/weather-mcp-server) for real-time weather data.
 - Utilizes CrewAI's multi-agent framework for flexible, collaborative task execution.
 - Easily customizable agent and task configurations.
 - Designed for both local development and scalable deployment.
