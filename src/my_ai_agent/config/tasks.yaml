@@ -11,6 +11,7 @@ weather_forecast_task:
     - Wind speed and direction
     - Weather condition summary
     - Active alerts (if any)
+  agent: weather_agent 
 
 analysis_task:
   description: >
@@ -23,3 +24,4 @@ analysis_task:
     - Recommended clothing and gear
     - Best times of day for outdoor activities
     - Emergency preparedness tips if severe weather expected
+  agent: analyst_agent

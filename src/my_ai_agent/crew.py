@@ -4,6 +4,7 @@ from crewai_tools import MCPServerAdapter
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 import os
+
 # If you want to run a snippet of code before or after the crew starts,
 # you can use the @before_kickoff and @after_kickoff decorators
 # https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
@@ -20,7 +21,9 @@ class MyAiAgent():
         # Configure MCP server connection for streamable-http transport
         self.server_params = {
             "url": os.getenv("MCP_SERVER_URL", "http://localhost:9000/mcp/"),
-            "transport": "streamable-http"
+            "transport": "streamable-http",
+            "timeout": 60,
+            "headers": {"Content-Type": "application/json"},
         }
 
     def _get_mcp_tools_and_print(self):
@@ -59,17 +62,39 @@ class MyAiAgent():
     # If you would like to add tools to your agents, you can learn more about it here:
     # https://docs.crewai.com/concepts/agents#agent-tools
 
+   # @agent
+   # def weather_agent(self) -> Agent:
+   #     """Weather forecasting specialist with MCP weather tools"""
+   #     # Print available tools when creating the agent
+   #     print("\n🤖 Initializing Weather Agent...")
+   #     tools = self._get_mcp_tools_and_print()
+   #     return Agent(
+   #         config=self.agents_config['weather_agent'],
+   #         tools=self._get_mcp_tools(),  # Inject MCP weather tools
+   #         verbose=True
+   #     )
+    
     @agent
     def weather_agent(self) -> Agent:
-        """Weather forecasting specialist with MCP weather tools"""
-        # Print available tools when creating the agent
-        print("\n🤖 Initializing Weather Agent...")
-        tools = self._get_mcp_tools_and_print()
-        return Agent(
-            config=self.agents_config['weather_agent'],
-            tools=self._get_mcp_tools(),  # Inject MCP weather tools
-            verbose=True
-        )
+      print("\n🤖 Initializing Weather Agent...")
+      adapter = MCPServerAdapter(self.server_params)
+      try:
+        # Get the actual list of Tool objects
+        tools = adapter.tools
+
+        print(f"✅ Connected to MCP server: found {len(tools)} tools")
+        for t in tools:
+            print(f" - {t.name}")
+      except Exception as e:
+        print(f"❌ MCP connect failed: {e}")
+        # Fallback to no tools if the connection or discovery fails
+        tools = []
+
+      return Agent(
+        config=self.agents_config['weather_agent'],
+        tools=tools,
+        verbose=True
+    )
 
     @agent
     def analyst_agent(self) -> Agent:

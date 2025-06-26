@@ -23,8 +23,8 @@ def run():
     """
     # Weather-specific inputs for San Francisco as example
     inputs = {
-        'latitude': 37.7749,
-        'longitude': -122.4194,
+        'latitude': 37.774,
+        'longitude': -122.419,
         'location_name': 'San Francisco, CA',
         'forecast_days': 3,
         'state': 'CA',  # For weather alerts
