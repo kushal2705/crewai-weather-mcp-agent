@@ -1,8 +1,9 @@
-from crewai import Agent, Crew, Process, Task
+from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import MCPServerAdapter
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
+from huggingface_hub import InferenceClient
 import os
 
 # If you want to run a snippet of code before or after the crew starts,
@@ -25,6 +26,17 @@ class MyAiAgent():
             "timeout": 60,
             "headers": {"Content-Type": "application/json"},
         }
+        self.llm_client = InferenceClient(
+            provider="novita",
+            api_key=os.getenv("HF_API_KEY")  # Store key in .env
+        )
+        # LiteLLM configuration for Hugging Face
+        self.hf_llm = LLM(
+            model="huggingface/meta-llama/Llama-3.1-8B-Instruct",  # Prefix with huggingface/
+            api_key=os.getenv("HF_API_KEY"),     # Use standard env var name
+            temperature=0.7,
+            max_tokens=1000
+        )
 
     def _get_mcp_tools_and_print(self):
         """Get MCP tools using MCPServerAdapter and print available tools"""
@@ -54,7 +66,16 @@ class MyAiAgent():
     def _get_mcp_tools(self):
         """Get MCP tools using MCPServerAdapter"""
         return MCPServerAdapter(self.server_params)
-    
+
+    def _hf_llm(self, messages, **kwargs):
+        """Custom LLM handler for Novita provider"""
+        completion = self.llm_client.chat.completions.create(
+            model="deepseek-ai/DeepSeek-V3",  # Your working model
+            messages=messages,
+            **kwargs
+        )
+        return completion.choices[0].message.content
+
     # Learn more about YAML configuration files here:
     # Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
     # Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
@@ -81,7 +102,6 @@ class MyAiAgent():
       try:
         # Get the actual list of Tool objects
         tools = adapter.tools
-
         print(f"✅ Connected to MCP server: found {len(tools)} tools")
         for t in tools:
             print(f" - {t.name}")
@@ -90,18 +110,23 @@ class MyAiAgent():
         # Fallback to no tools if the connection or discovery fails
         tools = []
 
+      # Create CrewAI agent with HF LLM
       return Agent(
         config=self.agents_config['weather_agent'],
+        #llm=self._hf_llm,  # Custom LLM handler
+        llm=self.hf_llm,
         tools=tools,
-        verbose=True
-    )
+        verbose=True,
+      )
 
     @agent
     def analyst_agent(self) -> Agent:
         """Weather data analyst for insights and recommendations"""
         return Agent(
             config=self.agents_config['analyst_agent'],
-            verbose=True
+            #llm=self._hf_llm,  # Custom LLM handler
+            llm=self.hf_llm,
+            verbose=True,
         )
 
     # To learn more about structured task outputs,
@@ -130,4 +155,8 @@ class MyAiAgent():
             tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
+            #manager_llm=self._hf_llm,            # ← override default orchestration LLM
+            #function_calling_llm=self._hf_llm
+            manager_llm=self.hf_llm,
+            function_calling_llm=self.hf_llm
         )
